@@ -67,13 +67,11 @@ char	*get_line(char *storage){
 		if(storage[0] == '\n')
 			line = ft_strdup("\n");
 		else
-		{
 			line = ft_substr(storage, 0, newline_position + 1);
-			tmp = ft_substr(storage, newline_position + 1, ft_strlen(storage));
-			ft_free(storage);
-			storage = ft_strdup(tmp);
-			ft_free(tmp);
-		}
+		tmp = ft_substr(storage, newline_position + 1, ft_strlen(storage));
+		ft_free(storage);
+		storage = ft_strdup(tmp);
+		ft_free(tmp);
 	}
 	return (line);
 }
@@ -87,11 +85,18 @@ char	*get_next_line(int fd){
 	buffer = malloc(BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
-	read_lines(fd, storage, buffer);
+	// printf("before-->storage-%s--buffer-->%s--\n", storage, buffer);
+	storage = read_lines(fd, storage, buffer);
+	printf("content : --%s--\n", storage);
+	// printf("after-->storage-%s--buffer-->%s--\n", storage, buffer);
 	return (get_line(storage));
+	// return ("salat");
 }
 
 int main(){
-	//int fd = open(0, O_RDONLY);
-	printf("%s", get_next_line(0));
+	int fd = open("file2.txt", O_RDONLY);
+	printf("%s", get_next_line(fd));
+	printf("%s", get_next_line(fd));
+	printf("%s", get_next_line(fd));
+	printf("%s", get_next_line(fd));
 }
